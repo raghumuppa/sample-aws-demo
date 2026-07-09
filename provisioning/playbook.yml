@@ -1,0 +1,60 @@
+---
+# Stage-two (lab-specific) provisioning. Runs AFTER the platform's stage-one
+# networking (ansible-stage-one). The platform injects the randomized sandbox
+# variables from ../variables.yml (telnet_port, root_flag) as Ansible vars.
+
+- name: Configure the server host (hidden telnet service + root flag)
+  hosts: server
+  become: true
+  tasks:
+    - name: Install telnet server via xinetd
+      ansible.builtin.apt:
+        name:
+          - xinetd
+          - telnetd
+        update_cache: true
+        state: present
+
+    - name: Expose telnet on the randomized port {{ telnet_port }}
+      ansible.builtin.copy:
+        dest: /etc/xinetd.d/telnet
+        mode: "0644"
+        content: |
+          service telnet
+          {
+              flags           = REUSE
+              socket_type     = stream
+              wait            = no
+              user            = root
+              server          = /usr/sbin/in.telnetd
+              port            = {{ telnet_port }}
+              log_on_failure  += USERID
+              disable         = no
+          }
+      notify: Restart xinetd
+
+    - name: Plant the root flag (the trainee must capture this)
+      ansible.builtin.copy:
+        dest: /root/root_flag.txt
+        content: "{{ root_flag }}\n"
+        owner: root
+        mode: "0600"
+
+  handlers:
+    - name: Restart xinetd
+      ansible.builtin.service:
+        name: xinetd
+        state: restarted
+        enabled: true
+
+- name: Configure the client host (trainee's entry point with tooling)
+  hosts: client
+  become: true
+  tasks:
+    - name: Install scanning / access tools
+      ansible.builtin.apt:
+        name:
+          - nmap
+          - telnet
+        update_cache: true
+        state: present

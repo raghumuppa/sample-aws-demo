@@ -1,0 +1,53 @@
+{
+  "title": "AWS Demo Training",
+  "description": "A minimal AWS-adapted scenario: scan the network, find a hidden telnet service, and capture the root flag.",
+  "prerequisites": ["Basic Linux command line", "Familiarity with nmap"],
+  "outcomes": ["Discover services on non-standard ports", "Use telnet to access a service", "Capture a flag from a remote host"],
+  "estimated_duration": 30,
+  "levels": [
+    {
+      "level_type": "INFO_LEVEL",
+      "title": "Introduction",
+      "content": "Welcome. Your network has a client you can log into and a server hidden behind a router. Find the service the server is running and capture its flag."
+    },
+    {
+      "level_type": "ACCESS_LEVEL",
+      "title": "Connect to your sandbox",
+      "content": "Open the **client** console from the portal (Guacamole). All tasks are done from the client host (192.168.30.5). The server (192.168.20.5) is only reachable through the router.",
+      "local_environment": false
+    },
+    {
+      "level_type": "TRAINING_LEVEL",
+      "title": "Find the hidden telnet service",
+      "content": "The server (192.168.20.5) exposes a telnet service on a NON-standard port. Scan it and report the port number.",
+      "solution": "From the client: `nmap -p1-65535 192.168.20.5` — the open port is the answer.",
+      "solution_penalized": true,
+      "max_score": 50,
+      "answer_variable_name": "telnet_port",
+      "hints": [
+        { "title": "Which tool?", "content": "Use nmap to scan all TCP ports.", "hint_penalty": 10 },
+        { "title": "Full range", "content": "Default nmap only scans common ports; add -p1-65535.", "hint_penalty": 20 }
+      ]
+    },
+    {
+      "level_type": "TRAINING_LEVEL",
+      "title": "Capture the root flag",
+      "content": "Connect to the telnet service on the port you found, read /root/root_flag.txt, and submit the flag.",
+      "solution": "`telnet 192.168.20.5 <port>`, then `cat /root/root_flag.txt`.",
+      "solution_penalized": true,
+      "max_score": 50,
+      "answer_variable_name": "root_flag",
+      "hints": [
+        { "title": "How to connect", "content": "telnet <ip> <port>", "hint_penalty": 10 }
+      ]
+    },
+    {
+      "level_type": "ASSESSMENT_LEVEL",
+      "title": "Feedback",
+      "assessment_type": "QUESTIONNAIRE",
+      "questions": [
+        { "question_type": "FFQ", "text": "What was the hardest part of this exercise?", "points": 0 }
+      ]
+    }
+  ]
+}

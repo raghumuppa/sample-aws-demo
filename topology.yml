@@ -1,0 +1,55 @@
+name: aws-demo-training
+
+# ---------------------------------------------------------------------------
+# AWS-adapted topology.
+#   * base_box.image  -> an AMI ID (region-specific; these are eu-west-1)
+#   * flavor          -> an EC2 instance type (NOT an OpenStack flavor name)
+#   * man_user        -> the AMI's default SSH user (ubuntu / admin)
+# The public library-* demos use OpenStack names (ubuntu-noble-x86_64,
+# standard.small) which DO NOT resolve on AWS — these values do.
+# ---------------------------------------------------------------------------
+
+hosts:
+  - name: server
+    base_box:
+      image: ami-0635b68d5cdcb86e6   # Ubuntu Noble 24.04 amd64 (eu-west-1)
+      man_user: ubuntu
+    flavor: t3.small
+
+  - name: client
+    base_box:
+      image: ami-0635b68d5cdcb86e6   # Ubuntu Noble 24.04 amd64 (eu-west-1)
+      man_user: ubuntu
+    flavor: t3.small
+
+routers:
+  - name: router
+    base_box:
+      image: ami-05d6feeb792ebaeff   # Debian 12 amd64 (eu-west-1)
+      man_user: admin                # Debian cloud AMIs default to 'admin'
+    flavor: t3.small
+
+networks:
+  - name: server-switch
+    cidr: 192.168.20.0/24
+    accessible_by_user: False        # server is reachable only via the client
+  - name: client-switch
+    cidr: 192.168.30.0/24
+
+net_mappings:
+  - host: server
+    network: server-switch
+    ip: 192.168.20.5
+  - host: client
+    network: client-switch
+    ip: 192.168.30.5
+
+router_mappings:
+  - router: router
+    network: server-switch
+    ip: 192.168.20.1
+  - router: router
+    network: client-switch
+    ip: 192.168.30.1
+
+groups: []

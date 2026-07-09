@@ -1,0 +1,5 @@
+---
+# External Ansible Galaxy dependencies for this definition's provisioning.
+# Empty for this demo — add roles/collections here if your playbook needs them.
+roles: []
+collections: []

@@ -1,0 +1,15 @@
+---
+# Relaxed yamllint rules for sandbox-definition content.
+extends: relaxed
+
+rules:
+  line-length: disable        # AMI comments / xinetd blocks can be long
+  comments-indentation: disable
+  document-start: disable     # topology/variables omit ---, ansible files keep it
+  comments:
+    min-spaces-from-content: 1   # keep ansible-lint's embedded yamllint happy
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
+  truthy:
+    allowed-values: ["true", "false", "True", "False"]  # accessible_by_user: False
