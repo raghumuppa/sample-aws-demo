@@ -1,14 +1,5 @@
 name: aws-demo-training
 
-# ---------------------------------------------------------------------------
-# AWS-adapted topology.
-#   * base_box.image  -> an AMI ID (region-specific; these are eu-west-1)
-#   * flavor          -> an EC2 instance type (NOT an OpenStack flavor name)
-#   * man_user        -> the AMI's default SSH user (ubuntu / admin)
-# The public library-* demos use OpenStack names (ubuntu-noble-x86_64,
-# standard.small) which DO NOT resolve on AWS — these values do.
-# ---------------------------------------------------------------------------
-
 hosts:
   - name: server
     base_box:
@@ -25,17 +16,14 @@ hosts:
 routers:
   - name: router
     base_box:
-      image: ami-05d6feeb792ebaeff   # Debian 12 amd64 (eu-west-1)
-      man_user: admin                # Debian cloud AMIs default to 'admin'
-    # The router gets 4 ENIs on AWS (both switches + the platform MAN network +
-    # its default link). t3.small caps at 3 ENIs -> AttachmentLimitExceeded.
-    # t3.xlarge is the smallest t3 that supports 4 ENIs.
+      image: ami-05d6feeb792ebaeff
+      man_user: admin
     flavor: t3.xlarge
 
 networks:
   - name: server-switch
     cidr: 192.168.20.0/24
-    accessible_by_user: False        # server is reachable only via the client
+    accessible_by_user: False
   - name: client-switch
     cidr: 192.168.30.0/24
 
@@ -48,8 +36,6 @@ net_mappings:
     ip: 192.168.30.5
 
 router_mappings:
-  # AWS reserves the first four IPs (.0-.3) and the last (.255) of every subnet,
-  # so the router cannot sit on .1 as it would on OpenStack. Use .254 instead.
   - router: router
     network: server-switch
     ip: 192.168.20.254
