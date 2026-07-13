@@ -27,7 +27,10 @@ routers:
     base_box:
       image: ami-05d6feeb792ebaeff   # Debian 12 amd64 (eu-west-1)
       man_user: admin                # Debian cloud AMIs default to 'admin'
-    flavor: t3.small
+    # The router gets 4 ENIs on AWS (both switches + the platform MAN network +
+    # its default link). t3.small caps at 3 ENIs -> AttachmentLimitExceeded.
+    # t3.xlarge is the smallest t3 that supports 4 ENIs.
+    flavor: t3.xlarge
 
 networks:
   - name: server-switch
