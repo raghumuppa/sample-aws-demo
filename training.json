@@ -4,15 +4,20 @@
   "prerequisites": ["Basic Linux command line", "Familiarity with nmap"],
   "outcomes": ["Discover services on non-standard ports", "Use telnet to access a service", "Capture a flag from a remote host"],
   "estimated_duration": 30,
+  "state": "UNRELEASED",
   "levels": [
     {
       "level_type": "INFO_LEVEL",
       "title": "Introduction",
+      "order": 0,
+      "estimated_duration": 2,
       "content": "Welcome. Your network has a **client** you can log into and a **server** hidden behind a router. Find the service the server is running and capture its flag."
     },
     {
       "level_type": "ACCESS_LEVEL",
       "title": "Connect to your sandbox",
+      "order": 1,
+      "estimated_duration": 3,
       "cloud_content": "Open the **client** console from the portal (Guacamole) and log in as `user` / `Password123`. All tasks are done from the client (10.10.30.5); the server (10.10.20.5) is reachable only through the router. When you are connected, enter the passkey **letmein** to continue.",
       "local_content": "Access the client machine locally, then enter the passkey **letmein** to continue.",
       "passkey": "letmein"
@@ -20,6 +25,8 @@
     {
       "level_type": "TRAINING_LEVEL",
       "title": "Find the hidden telnet service",
+      "order": 2,
+      "estimated_duration": 10,
       "content": "The server (10.10.20.5) exposes a telnet service on a NON-standard port. Scan it and report the port number.",
       "answer_variable_name": "telnet_port",
       "solution": "From the client run: `nmap -p1-65535 10.10.20.5` — the single open port is the answer.",
@@ -34,6 +41,8 @@
     {
       "level_type": "TRAINING_LEVEL",
       "title": "Capture the root flag",
+      "order": 3,
+      "estimated_duration": 10,
       "content": "Connect to the telnet service on the port you found, read `/root/root_flag.txt`, and submit the flag.",
       "answer_variable_name": "root_flag",
       "solution": "`telnet 10.10.20.5 <port>`, then `cat /root/root_flag.txt`.",
@@ -47,6 +56,8 @@
     {
       "level_type": "ASSESSMENT_LEVEL",
       "title": "Feedback",
+      "order": 4,
+      "estimated_duration": 5,
       "instructions": "Please answer the following question.",
       "assessment_type": "QUESTIONNAIRE",
       "questions": [
