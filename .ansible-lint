@@ -1,4 +1,0 @@
-# YAML style is handled by yamllint (.yamllint.yml) in the `yaml` make target,
-# so skip ansible-lint's own yaml rule to avoid duplicate/conflicting checks.
-skip_list:
-  - yaml
