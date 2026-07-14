@@ -3,22 +3,22 @@ name: aws-demo-training
 hosts:
   - name: server
     base_box:
-      image: ami-0635b68d5cdcb86e6   # Ubuntu Noble 24.04 amd64 (eu-west-1)
+      image: ami-0635b68d5cdcb86e6
       man_user: ubuntu
     flavor: t3.small
 
   - name: client
     base_box:
-      image: ami-0635b68d5cdcb86e6   # Ubuntu Noble 24.04 amd64 (eu-west-1)
+      image: ami-0635b68d5cdcb86e6
       man_user: ubuntu
     flavor: t3.small
 
 routers:
   - name: router
     base_box:
-      image: ami-05d6feeb792ebaeff   # Debian 12 amd64 (eu-west-1)
+      image: ami-05d6feeb792ebaeff
       man_user: admin
-    flavor: t3.xlarge                # >=4 ENIs required on AWS
+    flavor: t3.xlarge
 
 networks:
   - name: server-switch
