@@ -1,8 +1,11 @@
-# Sandbox variables — randomized PER allocated sandbox, so every trainee gets
-# unique answers. Referenced by provisioning/playbook.yml (to configure the box)
-# and by training.json (as the expected answers).
+# For more details about APG Variables see https://docs.platform.cyberrange.cz/user-guide-advanced/sandboxes/apg-variables/
+
 telnet_port:
-  type: port
-  min: 1500
+    type: port
+    min: 1500
+
+alice_flag:
+    type: text
+
 root_flag:
-  type: text
+    type: text
