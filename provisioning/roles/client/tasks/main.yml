@@ -4,7 +4,7 @@
 - name: Create alias for server
   lineinfile:
     path: '/etc/hosts'
-    line: '192.168.20.5 server'
+    line: '10.10.20.5 server'
 
 - name: Install packages
   apt:
