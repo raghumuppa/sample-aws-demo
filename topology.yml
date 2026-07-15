@@ -1,11 +1,15 @@
 name: library-junior-hacker-adaptive
 
 hosts:
+  # Upstream uses the OpenStack image "kali" with man_user "debian".
+  # On AWS the equivalent is the Marketplace image debian-kali-last-snapshot-amd64,
+  # whose default login is "kali" (not "debian"). Requires a Marketplace
+  # subscription: https://aws.amazon.com/marketplace/pp?sku=7lgvy7mt78lgoi4lant0znp5h
   - name: attacker
     base_box:
-      image: ami-0635b68d5cdcb86e6
-      man_user: ubuntu
-    flavor: t3.small
+      image: ami-0e374f53890263001
+      man_user: kali
+    flavor: t3.medium
 
   - name: server
     base_box:

@@ -4,6 +4,31 @@
     path: /etc/hosts
     line: "{{ item.value }} {{ item.key }}"
 
+# The AWS Kali cloud image is a minimal build, unlike the full desktop "kali"
+# image upstream targets on OpenStack. /usr/share/wordlists/fasttrack.txt is a
+# symlink shipped by "wordlists" pointing into "set"; without both, the symlink
+# dangles and every task below fails with "Destination does not exist".
+- name: Ensure wordlist packages are present
+  apt:
+    name:
+      - wordlists
+      - set
+    state: present
+    update_cache: yes
+
+- name: Assert the fasttrack wordlist resolves to a real file
+  stat:
+    path: /usr/share/wordlists/fasttrack.txt
+  register: fasttrack_wordlist
+
+- name: Fail early with a legible message if the wordlist is missing
+  fail:
+    msg: >-
+      /usr/share/wordlists/fasttrack.txt is missing or a dangling symlink on
+      this image. The "wordlists" and "set" packages must provide it before
+      the tasks below can append the ZIP password to it.
+  when: not fasttrack_wordlist.stat.exists
+
 - name: Add zip's password to the fasttrack wordlist
   lineinfile:
     path: /usr/share/wordlists/fasttrack.txt

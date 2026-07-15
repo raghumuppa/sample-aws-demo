@@ -1,3 +1,7 @@
+# Intentional divergence from upstream, which has "attacker: 10.1.26.23" — a
+# target-switch address, while attacker actually sits on the attacker-switch at
+# 10.1.27.23. Translated 1:1 that quirk would be 10.10.20.23; corrected here to
+# attacker's real address. Revert to 10.10.20.23 for byte-faithful replication.
 aliases:
-  attacker: 10.10.20.23
+  attacker: 10.10.30.23
 routings: []
