@@ -49,16 +49,9 @@ net_mappings:
 router_mappings:
   - router: router
     network: target-switch
-<<<<<<< HEAD
     ip: 10.10.20.254
   - router: router
     network: attacker-switch
     ip: 10.10.30.254
-=======
-    ip: 10.10.20.1
-  - router: router
-    network: attacker-switch
-    ip: 10.10.30.1
->>>>>>> 8425261 (Sample Cyber Range Project)
 
 groups: []
