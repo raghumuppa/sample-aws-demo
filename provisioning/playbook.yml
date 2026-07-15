@@ -1,0 +1,42 @@
+---
+# Basic configuration of all defined devices
+
+# Installation of common tools at all hosts
+- name: Configuring hosts
+  hosts: hosts
+  become: yes
+  roles:
+    - hosts
+
+# Installation and configuration of each host
+- name: Configure attacker
+  hosts: attacker
+  become: yes
+  roles:
+    - role: user-access
+      user_access_username: user
+      user_access_password: Password123
+      user_access_sudo: True
+    - role: attacker
+    - role: chrony
+
+- name: Configure server
+  hosts: server
+  become: yes
+  roles:
+    - server
+
+- name: Configure client
+  hosts: client
+  become: yes
+  roles:
+    - client
+
+- name: setup hosts logging roles
+  hosts:
+    - routers
+    - hosts
+  become: yes
+  roles:
+    - role: sandbox-logging
+      slf_destination_port: '{% if hostvars["man"] is defined -%} 514 {%- else -%} 515 {%- endif %}'

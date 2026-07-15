@@ -1,0 +1,20 @@
+- name: Adding aliases
+  loop: "{{ aliases | dict2items }}"
+  lineinfile:
+      path: /etc/hosts
+      line: "{{ item.value }} {{ item.key }}"
+
+# TODO do we really need to add this user?
+- name: Add the user 'juraj' with a bash shell to the user's groups
+  user:
+      name: juraj
+      shell: /bin/bash
+
+# Source: https://stackoverflow.com/questions/46975474/ansible-disable-service-only-if-present/63720932#63720932
+- name: Disable services if enabled
+  shell: if systemctl is-enabled --quiet {{ item }}; then systemctl disable {{ item }} && echo disable_ok ; fi
+  register: output
+  changed_when: "'disable_ok' in output.stdout"
+  loop:
+    - smtp
+    # - ssh
